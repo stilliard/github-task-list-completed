@@ -1,0 +1,29 @@
+"//1": "describes your app and its dependencies",
+"//2": "https://docs.npmjs.com/files/package.json",
+"//3": "updating this file will download and update your packages",
+
+{
+  "name": "your-bot-name",
+  "version": "1.0.0",
+  "description": "",
+  "author": "github-username <email-address>",
+  "license": "ISC",
+  "repository": "your-repository-name",
+  "scripts": {
+    "start": "probot run ./index.js",
+    "test": "mocha && standard"
+  },
+  "dependencies": {
+    "probot": "^3.0.0"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "localtunnel": "^1.8.2",
+    "mocha": "^3.2.0",
+    "standard": "^10.0.3"
+  },
+  "engines": {
+    "node": "7.7.1",
+    "npm": "4.0.0"
+  }
+}
