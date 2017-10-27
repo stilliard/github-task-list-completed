@@ -11,15 +11,24 @@ To get your own Glitch-hosted probot up-and-running:
 
 1. Remix this project by clicking the **Remix This** button above.
 
-2. Click the **New File** button (at left) and type `.data/private-key.pem`. Then click **Add File**.
+2. [Configure a new app on Github](https://github.com/settings/apps/new).
+    - For the Homepage URL, you can use your repository URL or website URL. 
+    - For the Webhook URL, use `https://www.example.com`. This will be replaced     later.
+    - For the Webhook Secret, open a terminal and run `openssl rand -base64 32`. Copy/paste the outputted value to the Webhook Secret box. Keep this handy
+    until Step 4.
+    - Choose the permissions you want to give your bot based on what you want to build (ex. issues bot, PR bot, hybrid).
+    - Download your private key.
+    - Save your changes.
 
-3. [Configure a new app on Github](https://probot.github.io/docs/development/#configure-a-github-app). For the Homepage URL, use `https://www.example.com`. This will be replaced later.
+3. Click the **New File** button (at left) and type `.data/private-key.pem`. Then click **Add File**. Open the private key you downloaded from Github, and copy/paste the contents into your new file.
 
-4. Edit the `.env` file (at left) with your app credentials. `PRIVATE_KEY_PATH=` should be set to `.data/private-key.pem`. `NODE_ENV=` should be set to `production`.
+4. Edit the `.env` file (at left) with your app credentials. 
+    - `APP_ID` can be found in the About section of your Github app.
+    - `WEBHOOK_SECRET` is the value you generated in Step 2.
+    - `PRIVATE_KEY_PATH=` should be set to `.data/private-key.pem`. 
+    - `NODE_ENV=` should be set to `production`. 
 
-5. Update the Webhook URL in your [Github app settings](https://github.com/settings/apps) to use the URL of the page that loads when you click the **Show** button at the top (ex. `https://your-project.glitch.me/probot`)
-
-6. Wait for app to load.
+5. Wait for app to load. A green `Live` label should show up next to the **Show** button when it's finished loading.
 
 ---
       
