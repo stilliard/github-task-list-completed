@@ -1,8 +1,7 @@
 {
-"//1": "describes your app and its dependencies",
-"//2": "https://docs.npmjs.com/files/package.json",
-"//3": "updating this file will download and update your packages",
-  
+  "//1": "describes your app and its dependencies",
+  "//2": "https://docs.npmjs.com/files/package.json",
+  "//3": "updating this file will download and update your packages",
   "name": "your-bot-name",
   "version": "1.0.0",
   "description": "",
@@ -11,14 +10,48 @@
   "repository": "your-repository-name",
   "scripts": {
     "start": "probot run ./index.js",
-    "test": "mocha && standard"
+    "test": "jest && standard && npm run doc-lint"
   },
   "dependencies": {
-    "probot": "^3.0.0",
-    "expect": "^1.20.2",
-    "localtunnel": "^1.8.2",
-    "jest": "*",
-    "standard": "^10.0.3"
+    "bottleneck": "^1.16.0",
+    "bunyan": "^2.0.2",
+    "bunyan-format": "^0.2.1",
+    "bunyan-sentry-stream": "^1.2.1",
+    "cache-manager": "^2.5.0",
+    "commander": "^2.11.0",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "github": "^12.0.1",
+    "github-app": "^3.2.0",
+    "github-webhook-handler": "^0.6.0",
+    "jest": "^21.2.1",
+    "js-yaml": "^3.10.0",
+    "pkg-conf": "^2.0.0",
+    "probot": "3.0.0",
+    "promise-events": "^0.1.4",
+    "raven": "^2.2.1",
+    "resolve": "^1.5.0",
+    "semver": "^5.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "eslint-plugin-markdown": "^1.0.0-beta.6",
+    "jsdoc": "^3.5.5",
+    "jsdoc-strip-async-await": "^0.1.0",
+    "minami": "^1.1.1",
+    "nock": "^9.0.19",
+    "semantic-release": "^8.0.3",
+    "standard": "^10.0.3",
+    "supertest": "^3.0.0"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ],
+    "plugins": [
+      "markdown"
+    ]
   },
   "engines": {
     "node": "7.7.1",
