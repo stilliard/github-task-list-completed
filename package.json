@@ -14,12 +14,10 @@
     "test": "mocha && standard"
   },
   "dependencies": {
-    "probot": "^3.0.0"
-  },
-  "devDependencies": {
+    "probot": "^3.0.0",
     "expect": "^1.20.2",
     "localtunnel": "^1.8.2",
-    "mocha": "^3.2.0",
+    "jest": "*",
     "standard": "^10.0.3"
   },
   "engines": {
