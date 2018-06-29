@@ -9,17 +9,17 @@
   "license": "ISC",
   "repository": "your-repository-name",
   "scripts": {
+    "dev": "nodemon --exec \"npm start\"",
     "start": "probot run ./index.js",
     "test": "jest && standard"
   },
   "dependencies": {
-    "probot": "^5.0.0"
+    "probot": "^7.0.0"
   },
   "devDependencies": {
-    "eslint": "^4.18.0",
-    "jest": "^21.2.1",
+    "jest": "^23.2.0",
     "smee-client": "^1.0.1",
-    "standard": "^10.0.3"
+    "standard": "^11.0.1"
   },
   "engines": {
     "node": "8.9",
