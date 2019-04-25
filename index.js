@@ -1,14 +1,31 @@
 module.exports = (app) => {
 
-  app.log('Yay! The app was loaded!')
+  app.log('Yay! The app was loaded!');
 
-  app.on(['pull_request.opened', 'pull_request.edited'], async context => {
-    // `context` extracts information from the event, which can be passed to
-    // GitHub API calls. This will return:
-    //   {owner: 'yourname', repo: 'yourrepo', number: 123, body: 'Hello World!}
-    const params = context.issue({body: 'Hello World!'})
+  // watch for pull requests & their changes
+  app.on(['pull_request.opened', 'pull_request.edited', 'pull_request.synchronize'], async context => {
+    
+    // lookup the pr body/description
+    const pr = context.payload.pull_request;
+    const body = pr.body;
+    
+    // check if it contains any not checked task list items
+    let check = {
+      name: 'task-list-completed',
+      head_branch: '', // workaround for https://github.com/octokit/rest.js/issues/874
+      head_sha: pr.head.sha,
+      status: 'in_progress',
+      started_at: new Date(newStatus.timeStart).toISOString(),
+    };
+    if (body.includes("- [ ] ")) {
+      // if it does, send a failed status
+      params = context.issue({body: 'Hello World!'});
+    } else {    
+      // otherwise, send a success status
+      params = context.issue({body: 'Hello World!'});
+    }
 
-    // Post a comment on the issue
-    return context.github.issues.createComment(params)
-  })
-}
+    // Send status back to GitHub
+    return context.github.checks.create(context.repo(check));
+  });
+};
