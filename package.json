@@ -5,7 +5,7 @@
   "name": "your-bot-name",
   "version": "1.0.0",
   "description": "",
-  "author": "github-username <email-address>",
+  "author": "stilliard <andrew@stapps.io>",
   "license": "ISC",
   "repository": "https://github.com/probot/hello-world.git",
   "scripts": {
