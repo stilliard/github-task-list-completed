@@ -12,6 +12,25 @@ You can use this to check manual tests or requirements have been ticked off befo
 
 Find out more about GitHub task lists: https://help.github.com/en/articles/about-task-lists
 
+## Contributing
+
+TODO: unit tests & travis CI
+
+For now, on Glitch you can click to "remix to edit" and then work on your own forked version.
+Then if you have ideas to bring over, you can submit an issue to discuss them or a pull request with the code changes.
+Thank you.
+
+## Development for main repo
+
+Code runs on Glitch, `git push glitch` & then in glitch, click tools > console and run `refresh`.
+Permission changes would need to be changed in the app on github.
+
+## Security
+
+The code is all here to see & available on the Glitch link below which is also where the service runs.
+No data about your user or repo is logged.
+
+If you discover a security issue please email it to myself at andrew@stapps.io and I will get back to you asap. For all other issues or help you can create an issue on this project - Thank you.
 
 ## Credits 
 - [Glitch Probot](https://github.com/probot/probot) - Used to build this project
