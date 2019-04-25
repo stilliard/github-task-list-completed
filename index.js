@@ -15,7 +15,6 @@ module.exports = (app) => {
     // send check back to GitHub
     return context.github.checks.create(context.repo({
       name: 'task-list-completed',
-      head_branch: '', // workaround for https://github.com/octokit/rest.js/issues/874
       head_sha: pr.head.sha,
       status: 'completed',
       conclusion: hasOutstandingTasks ? 'failure' : 'success',
