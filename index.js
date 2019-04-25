@@ -1,5 +1,4 @@
 module.exports = (app) => {
-
   app.log('Yay! The app was loaded!');
 
   // watch for pull requests & their changes
