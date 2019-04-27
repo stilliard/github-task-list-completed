@@ -11,9 +11,8 @@ module.exports = (app) => {
     
     // check if it contains any not checked task list items
     const hasOutstandingTasks = body.includes("- [ ] ");
-
-    // send check back to GitHub
-    return context.github.checks.create(context.repo({
+    
+    let check = {
       name: 'task-list-completed',
       head_sha: pr.head.sha,
       status: 'completed',
@@ -25,6 +24,9 @@ module.exports = (app) => {
         summary: hasOutstandingTasks ? 'Tasks still remain to be completed' : 'All tasks have been completed',
         text: 'We check if any task lists need completing before you can merge this PR'
       }
-    }));
+    };
+
+    // send check back to GitHub
+    return context.github.checks.create(context.repo(check));
   });
 };
