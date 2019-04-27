@@ -16,7 +16,7 @@ module.exports = (app) => {
       name: 'task-list-completed',
       head_sha: pr.head.sha,
       status: 'completed',
-      conclusion: hasOutstandingTasks ? 'failure' : 'success',
+      conclusion: hasOutstandingTasks ? 'neutral' : 'success',
       started_at: startTime,
       completed_at: (new Date).toISOString(),
       output: {
