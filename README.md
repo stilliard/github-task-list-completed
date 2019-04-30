@@ -3,7 +3,7 @@
 GitHub - Task list completed PR check
 =========================
 
-Install: https://github.com/apps/task-list-completed
+Install from the Marketplace: https://github.com/marketplace/task-list-completed
 
 Check a pull request body for task lists & make sure they are all completed.
 The check will not pass until all task lists have been checked.
