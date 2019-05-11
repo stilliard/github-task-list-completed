@@ -1,4 +1,4 @@
-<p align="center"><img style="width: 140px;" src="https://cdn3.iconfinder.com/data/icons/flat-office-icons-1/140/Artboard_1-4-512.png"></p>
+<p align="center"><img width="140" src="https://cdn3.iconfinder.com/data/icons/flat-office-icons-1/140/Artboard_1-4-512.png"></p>
 
 
 GitHub - Task list completed PR check
