@@ -12,9 +12,24 @@ You can use this to check manual tests or requirements have been ticked off befo
 
 Find out more about GitHub task lists: https://help.github.com/en/articles/about-task-lists
 
-## Contributing
+## Docs
 
-TODO: unit tests & travis CI
+Install & add to the repos you want.
+
+Want to require tasks to be complete before it can be merged?
+
+Inside your GitHub repo > Settings > Branches > Branch protection rules > Add rule > select require checks & require this check to pass.
+
+By default, we mark the check as in_progress until all tasks pass and then it marks it as successful.
+
+## TODO
+
+- [ ] unit tests & travis CI
+- [ ] Submit to https://github.com/probot/probot.github.io/blob/master/.github/app-review-process.md
+- [ ] Add config to allow changing from in_progress to completed but with a failure or neutral conclsion if needed -> https://probot.github.io/api/latest/classes/context.html#config
+- [ ] Finish docs, e.g. about using a .github/task-list.yml for above
+
+## Contributing
 
 For now, on Glitch you can click to "remix to edit" and then work on your own forked version.
 Then if you have ideas to bring over, you can submit an issue to discuss them or a pull request with the code changes.
