@@ -1,14 +1,46 @@
-<img style="width: 140px; display: block; margin: 0 auto;" src="https://cdn3.iconfinder.com/data/icons/flat-office-icons-1/140/Artboard_1-4-512.png">
+<p align="center"><img style="width: 140px;" src="https://cdn3.iconfinder.com/data/icons/flat-office-icons-1/140/Artboard_1-4-512.png"></p>
+
 
 GitHub - Task list completed PR check
 =========================
 
 Install from the Marketplace: https://github.com/marketplace/task-list-completed
 
-Check a pull request body for task lists & make sure they are all completed.
+Check a pull request body for task lists / checkboxes / tickboxes & make sure they are all completed.
 The check will not pass until all task lists have been checked.
 
+**Mark it as a required check to preventing merging the PR until all tasks in a PR have been ticked off.**
+
 You can use this to check manual tests or requirements have been ticked off before the pull request can be merged.
+
+E.g. Say you add some tasks like so
+```
+- [x] Check the size looks good on the front end
+- [ ] Check the image is centered
+```
+
+& they display like this to be ticked off as tests:
+
+![](./screenshots/example-pr.png)
+
+this will show the check as pending as only 1 of the tasks is completed s (same if none etc.):
+
+![](./screenshots/tasks-remaining.png)
+
+Once all tasks are marked off it'll show as completed:
+
+![](./screenshots/tasks-completed.png)
+
+
+Also when viewing all Pull Requests, you'll see the green tick when all completed:
+![](./screenshots/success-pr.png)
+
+& an orange dot when still tasks todo:
+![](./screenshots/pending-pr.png)
+
+& if you have other CI tests such as unit tests etc, our pending status will not get in the way of failing tests, they will still show as the red cross:
+![](./screenshots/failing-pr.png)
+
 
 Find out more about GitHub task lists: https://help.github.com/en/articles/about-task-lists
 
