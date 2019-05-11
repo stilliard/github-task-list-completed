@@ -15,15 +15,20 @@ module.exports = (app) => {
     let check = {
       name: 'task-list-completed',
       head_sha: pr.head.sha,
-      status: 'completed',
-      conclusion: hasOutstandingTasks ? 'neutral' : 'success',
       started_at: startTime,
-      completed_at: (new Date).toISOString(),
       output: {
-        title: hasOutstandingTasks ? 'Outstanding tasks' : 'Tasks completed',
-        summary: hasOutstandingTasks ? 'Tasks still remain to be completed' : 'All tasks have been completed',
+        title: 'Outstanding tasks',
+        summary: 'Tasks still remain to be completed',
         text: 'We check if any task lists need completing before you can merge this PR'
       }
+    };
+    // all finished?
+    if (! hasOutstandingTasks) {
+      check.status = 'completed';
+      check.conclusion = 'success';
+      check.completed_at = (new Date).toISOString();
+      check.output.title = 'Tasks completed';
+      check.output.summary = 'All tasks have been completed';
     };
 
     // send check back to GitHub
