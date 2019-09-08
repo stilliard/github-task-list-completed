@@ -16,6 +16,7 @@ module.exports = (app) => {
       name: 'task-list-completed',
       head_sha: pr.head.sha,
       started_at: startTime,
+      status: 'in_progress',
       output: {
         title: 'Outstanding tasks',
         summary: 'Tasks still remain to be completed',
