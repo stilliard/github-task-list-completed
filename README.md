@@ -69,7 +69,7 @@ Thank you.
 
 ## Development for main repo
 
-Code runs on Glitch, `git push glitch` & then in glitch, click tools > console and run `refresh`.
+Code runs on Glitch, in the glitch page, click tools > console and then run `git pull origin master && refresh`.
 Permission changes would need to be changed in the app on github.
 
 ## Security
