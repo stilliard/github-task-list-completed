@@ -8,10 +8,10 @@ module.exports = (app) => {
     // lookup the pr body/description
     const pr = context.payload.pull_request;
     const body = pr.body;
-    
+
     // check if it contains any not checked task list items
-    const hasOutstandingTasks = body.includes("- [ ] ");
-    
+    const hasOutstandingTasks = body.match(/(?:^|[\r\n])\s*(?:\*|\-|\d+\.) \[ \]\s+\S/);
+
     let check = {
       name: 'task-list-completed',
       head_sha: pr.head.sha,
@@ -22,8 +22,9 @@ module.exports = (app) => {
         text: 'We check if any task lists need completing before you can merge this PR'
       }
     };
+
     // all finished?
-    if (! hasOutstandingTasks) {
+    if (hasOutstandingTasks === null) {
       check.status = 'completed';
       check.conclusion = 'success';
       check.completed_at = (new Date).toISOString();
