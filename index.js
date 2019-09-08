@@ -24,7 +24,7 @@ module.exports = (app) => {
     };
 
     // all finished?
-    if (hasOutstandingTasks !== null) {
+    if (hasOutstandingTasks === null) {
       check.status = 'completed';
       check.conclusion = 'success';
       check.completed_at = (new Date).toISOString();
