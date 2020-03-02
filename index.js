@@ -1,3 +1,5 @@
+const marked = require('marked');
+
 module.exports = (app) => {
   app.log('Yay! The app was loaded!');
 
@@ -9,8 +11,11 @@ module.exports = (app) => {
     const pr = context.payload.pull_request;
     const body = pr.body;
 
+    const tokens = marked.lexer(body, { gfm: true });
+    const listItems = tokens.filter(token => token.type === 'list_item_start');
+    
     // check if it contains any not checked task list items
-    const hasOutstandingTasks = body.match(/(?:^|[\r\n])\s*(?:\*|\-|\d+\.) \[ \]\s+\S/);
+    const hasOutstandingTasks = listItems.some(item => !item.checked)
 
     let check = {
       name: 'task-list-completed',
@@ -25,7 +30,7 @@ module.exports = (app) => {
     };
 
     // all finished?
-    if (hasOutstandingTasks === null) {
+    if (hasOutstandingTasks === false) {
       check.status = 'completed';
       check.conclusion = 'success';
       check.completed_at = (new Date).toISOString();
