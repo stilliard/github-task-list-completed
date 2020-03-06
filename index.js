@@ -15,7 +15,7 @@ module.exports = (app) => {
     const listItems = tokens.filter(token => token.type === 'list_item_start');
     
     // check if it contains any not checked task list items
-    const hasOutstandingTasks = listItems.some(item => !item.checked)
+    const hasOutstandingTasks = listItems.some(item => item.checked === false);
 
     let check = {
       name: 'task-list-completed',
