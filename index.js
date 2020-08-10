@@ -1,4 +1,4 @@
-const marked = require('marked');
+const checkOutstandingTasks = require('./src/check-outstanding-tasks');
 
 module.exports = (app) => {
   app.log('Yay! The app was loaded!');
@@ -32,11 +32,7 @@ module.exports = (app) => {
       pr = response.data;
     }
 
-    let tokens = marked.lexer(pr.body, { gfm: true });
-    let listItems = tokens.filter(token => token.type === 'list_item_start');
-    
-    // check if it contains any not checked task list items
-    let hasOutstandingTasks = listItems.some(item => item.checked === false);
+    let hasOutstandingTasks = checkOutstandingTasks(pr.body);
 
     // lookup comments on the PR
     let comments = await context.github.issues.listComments(context.repo({
@@ -56,9 +52,7 @@ module.exports = (app) => {
     // & check them for tasks
     if (comments.data.length) {
       comments.data.forEach(function (comment) {
-        let tokens = marked.lexer(comment.body, { gfm: true });
-        let listItems = tokens.filter(token => token.type === 'list_item_start');
-        if (listItems.some(item => item.checked === false)) {
+        if (checkOutstandingTasks(comment.body)) {
           hasOutstandingTasks = true;
         }
       });
