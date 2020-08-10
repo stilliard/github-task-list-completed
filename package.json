@@ -9,7 +9,7 @@
   "license": "ISC",
   "repository": "https://github.com/stilliard/github-task-list-completed.git",
   "scripts": {
-    "dev": "nodemon --exec \"npm start\"",
+    "dev": "nodemon --exec \"LOG_LEVEL=debug npm start\"",
     "start": "probot run ./index.js",
     "test": "jest && standard"
   },
