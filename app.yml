@@ -22,7 +22,7 @@ default_events:
 # - deployment_status
 # - fork
 # - gollum
-# - issue_comment
+ - issue_comment
 # - issues
 # - label
 # - milestone
@@ -37,7 +37,7 @@ default_events:
 # - public
  - pull_request
 # - pull_request_review
-# - pull_request_review_comment
+ - pull_request_review_comment
 # - push
 # - release
 # - repository
@@ -70,7 +70,7 @@ default_permissions:
 
   # Issues and related comments, assignees, labels, and milestones.
   # https://developer.github.com/v3/apps/permissions/#permission-on-issues
-  # issues: write
+  issues: read
 
   # Search repositories, list collaborators, and access repository metadata.
   # https://developer.github.com/v3/apps/permissions/#metadata-permissions
@@ -126,14 +126,14 @@ default_permissions:
 
 
 # The name of the GitHub App. Defaults to the name specified in package.json
-# name: My Probot App
+name: GH Task List Completed - DEV BUILD
 
 # The homepage of your GitHub App.
-# url: https://example.com/
+url: https://github.com/stilliard/github-task-list-completed
 
 # A description of the GitHub App.
-# description: A description of my awesome app
+description: Development only version of the task list completed app, experimental, please use the public version
 
 # Set to true when your GitHub App is available to the public or false when it is only accessible to the owner of the app.
 # Default: true
-# public: false
+public: false
