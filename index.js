@@ -18,14 +18,11 @@ module.exports = (app) => {
 
     // check if this is an issue rather than pull event
     if (context.event == 'issue_comment' && ! pr) {
-      app.log.debug('checking issue comment...');
       // if so we need to make sure this is for a PR only
       if (! context.payload.issue.pull_request) {
-        app.log.debug('issue is not PR');
         return;
       }
       // & lookup the PR it's for to continue
-      app.log.debug('PR number is:', context.payload.issue.number);
       let response = await context.github.pulls.get(context.repo({
         pull_number: context.payload.issue.number
       }));
@@ -38,13 +35,11 @@ module.exports = (app) => {
     let comments = await context.github.issues.listComments(context.repo({
       issue_number: pr.number
     }));
-    app.log.debug('found comments:', comments.data.length, comments.data);
 
     // as well as review comments
     let reviewComments = await context.github.pulls.listComments(context.repo({
       pull_number: pr.number
     }));
-    app.log.debug('found review-comments:', reviewComments.data.length);
     if (reviewComments.data.length) {
       comments.data = comments.data.concat(reviewComments.data);
     }
