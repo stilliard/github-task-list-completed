@@ -9,6 +9,7 @@ module.exports = (app) => {
     'pull_request.edited',
     'pull_request.synchronize',
     'issue_comment', // for comments on github issues
+    'pull_request_review', // reviews
     'pull_request_review_comment', // comment lines on diffs for reviews
   ], async context => {
     const startTime = (new Date).toISOString();
@@ -37,11 +38,19 @@ module.exports = (app) => {
     }));
 
     // as well as review comments
-    let reviewComments = await context.github.pulls.listComments(context.repo({
+    let reviewComments = await context.github.pulls.listReviews(context.repo({
       pull_number: pr.number
     }));
     if (reviewComments.data.length) {
       comments.data = comments.data.concat(reviewComments.data);
+    }
+
+    // and diff level comments on reviews
+    let reviewDiffComments = await context.github.pulls.listComments(context.repo({
+      pull_number: pr.number
+    }));
+    if (reviewDiffComments.data.length) {
+      comments.data = comments.data.concat(reviewDiffComments.data);
     }
 
     // & check them for tasks
