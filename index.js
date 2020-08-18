@@ -75,7 +75,6 @@ module.exports = (app) => {
     };
 
     // all finished?
-    console.log(outstandingTasks);
     if (outstandingTasks.remaining === 0) {
       check.status = 'completed';
       check.conclusion = 'success';

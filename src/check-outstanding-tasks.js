@@ -13,7 +13,7 @@ module.exports = function (body) {
 
     // return counts of task list items and how many are left to be completed
     return {
-        total: listItems.length,
+        total: listItems.filter(item => item.checked !== undefined).length,
         remaining: listItems.filter(item => item.checked === false).length
     };
 };
