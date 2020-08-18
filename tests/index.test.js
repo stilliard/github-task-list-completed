@@ -8,7 +8,9 @@ Hello World
 - [ ] testing
 - [x] 123
 `;
-    expect(checkOutstandingTasks(markdown)).toBe(true);
+    let results = checkOutstandingTasks(markdown);
+    expect(results.total).toBe(2);
+    expect(results.remaining).toBe(1);
 });
 test('Test no outstanding tasks', () => {
     let markdown = `
@@ -16,5 +18,7 @@ Hello World
 - [x] testing
 - [x] 123
 `;
-    expect(checkOutstandingTasks(markdown)).toBe(false);
+    let results = checkOutstandingTasks(markdown);
+    expect(results.total).toBe(2);
+    expect(results.remaining).toBe(0);
 });

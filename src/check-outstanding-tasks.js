@@ -2,11 +2,18 @@ const marked = require('marked');
 
 module.exports = function (body) {
     if (body === null) {
-        return false;
+        return {
+            total: 0,
+            remaining: 0
+        };
     }
+
     let tokens = marked.lexer(body, { gfm: true });
     let listItems = tokens.filter(token => token.type === 'list_item_start');
 
-    // check if it contains any not checked task list items
-    return listItems.some(item => item.checked === false);
+    // return counts of task list items and how many are left to be completed
+    return {
+        total: listItems.length,
+        remaining: listItems.filter(item => item.checked === false).length
+    };
 };

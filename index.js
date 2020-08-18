@@ -30,7 +30,7 @@ module.exports = (app) => {
       pr = response.data;
     }
 
-    let hasOutstandingTasks = checkOutstandingTasks(pr.body);
+    let outstandingTasks = checkOutstandingTasks(pr.body);
 
     // lookup comments on the PR
     let comments = await context.github.issues.listComments(context.repo({
@@ -56,9 +56,9 @@ module.exports = (app) => {
     // & check them for tasks
     if (comments.data.length) {
       comments.data.forEach(function (comment) {
-        if (checkOutstandingTasks(comment.body)) {
-          hasOutstandingTasks = true;
-        }
+        let commentOutstandingTasks = checkOutstandingTasks(comment.body);
+        outstandingTasks.total += commentOutstandingTasks.total;
+        outstandingTasks.remaining += commentOutstandingTasks.remaining;
       });
     }
 
@@ -68,18 +68,18 @@ module.exports = (app) => {
       started_at: startTime,
       status: 'in_progress',
       output: {
-        title: 'Outstanding tasks',
-        summary: 'Tasks still remain to be completed',
+        title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed',
+        summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed',
         text: 'We check if any task lists need completing before you can merge this PR'
       }
     };
 
     // all finished?
-    if (hasOutstandingTasks === false) {
+    console.log(outstandingTasks);
+    if (outstandingTasks.remaining === 0) {
       check.status = 'completed';
       check.conclusion = 'success';
       check.completed_at = (new Date).toISOString();
-      check.output.title = 'Tasks completed';
       check.output.summary = 'All tasks have been completed';
     };
 
