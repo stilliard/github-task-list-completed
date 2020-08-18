@@ -9,9 +9,10 @@
   "license": "ISC",
   "repository": "https://github.com/stilliard/github-task-list-completed.git",
   "scripts": {
+    "dev-debug": "nodemon --exec \"LOG_LEVEL=debug npm start\"",
     "dev": "nodemon --exec \"npm start\"",
     "start": "probot run ./index.js",
-    "test": "jest && standard"
+    "test": "jest"
   },
   "dependencies": {
     "probot": "^9.0.0",
@@ -19,16 +20,10 @@
   },
   "devDependencies": {
     "jest": "^23.2.0",
-    "smee-client": "^1.0.1",
-    "standard": "^11.0.1"
+    "smee-client": "^1.0.1"
   },
   "engines": {
     "node": "8.9",
     "npm": "5.6"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
   }
 }
