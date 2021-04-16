@@ -34,11 +34,13 @@ module.exports = (app) => {
 
     // lookup comments on the PR
     let comments = await context.github.issues.listComments(context.repo({
+      per_page: 100,
       issue_number: pr.number
     }));
 
     // as well as review comments
     let reviewComments = await context.github.pulls.listReviews(context.repo({
+      per_page: 100,
       pull_number: pr.number
     }));
     if (reviewComments.data.length) {
@@ -47,6 +49,7 @@ module.exports = (app) => {
 
     // and diff level comments on reviews
     let reviewDiffComments = await context.github.pulls.listComments(context.repo({
+      per_page: 100,
       pull_number: pr.number
     }));
     if (reviewDiffComments.data.length) {
