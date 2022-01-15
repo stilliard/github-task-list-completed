@@ -9,7 +9,12 @@ module.exports = function (body) {
     }
 
     let tokens = marked.lexer(body, { gfm: true });
-    let listItems = tokens.filter(token => token.type === 'list_item_start');
+    // flatten the nested tokens to make filtering easier
+    let allTokens = tokens.flatMap(function mapper(token) {
+        return token.items && token.items.length ? token.items.flatMap(mapper) : [token];
+    });
+    // and filter down to just the task list items
+    let listItems = allTokens.filter(token => token.type === 'list_item');
 
     // return counts of task list items and how many are left to be completed
     return {
