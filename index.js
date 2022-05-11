@@ -1,5 +1,7 @@
 const checkOutstandingTasks = require('./src/check-outstanding-tasks');
 
+const ENABLE_ID_LOGS = true; // simple ID only logs, no private repo data logged
+
 module.exports = (app) => {
   app.log('Yay! The app was loaded!');
 
@@ -29,6 +31,10 @@ module.exports = (app) => {
       pr = response.data;
     }
 
+    if (ENABLE_ID_LOGS) {
+      app.log(`PR #${pr.number}: Request received`);
+    }
+
     let outstandingTasks = checkOutstandingTasks(pr.body);
 
     // lookup comments on the PR
@@ -36,6 +42,10 @@ module.exports = (app) => {
       per_page: 100,
       issue_number: pr.number
     }));
+
+    if (ENABLE_ID_LOGS) {
+      app.log(`PR #${pr.number}:Main comments api lookup complete`);
+    }
 
     // as well as review comments
     let reviewComments = await context.github.pulls.listReviews(context.repo({
@@ -46,6 +56,10 @@ module.exports = (app) => {
       comments.data = comments.data.concat(reviewComments.data);
     }
 
+    if (ENABLE_ID_LOGS) {
+      app.log(`PR #${pr.number}: Review comments api lookup complete`);
+    }
+
     // and diff level comments on reviews
     let reviewDiffComments = await context.github.pulls.listComments(context.repo({
       per_page: 100,
@@ -53,6 +67,10 @@ module.exports = (app) => {
     }));
     if (reviewDiffComments.data.length) {
       comments.data = comments.data.concat(reviewDiffComments.data);
+    }
+
+    if (ENABLE_ID_LOGS) {
+      app.log(`PR #${pr.number}: Diff comments api lookup complete`);
     }
 
     // & check them for tasks
@@ -88,6 +106,10 @@ module.exports = (app) => {
       check.completed_at = (new Date).toISOString();
       check.output.summary = 'All tasks have been completed';
     };
+
+    if (ENABLE_ID_LOGS) {
+      app.log(`PR #${pr.number}: Complete and sending back to github`);
+    }
 
     // send check back to GitHub
     return context.github.checks.create(context.repo(check));
