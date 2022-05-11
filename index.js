@@ -19,7 +19,7 @@ module.exports = (app) => {
     let pr = context.payload.pull_request;
 
     // check if this is an issue rather than pull event
-    if (context.event == 'issue_comment' && ! pr) {
+    if (context.name == 'issue_comment' && ! pr) {
       // if so we need to make sure this is for a PR only
       if (! context.payload.issue.pull_request) {
         return;
@@ -29,6 +29,10 @@ module.exports = (app) => {
         pull_number: context.payload.issue.number
       }));
       pr = response.data;
+    }
+    if (! pr) {
+      app.log('[error] not on a PR?');
+      return;
     }
 
     if (ENABLE_ID_LOGS) {
