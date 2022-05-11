@@ -25,7 +25,7 @@ module.exports = (app) => {
         return;
       }
       // & lookup the PR it's for to continue
-      let response = await context.github.pulls.get(context.repo({
+      let response = await context.octokit.pulls.get(context.repo({
         pull_number: context.payload.issue.number
       }));
       pr = response.data;
@@ -38,17 +38,17 @@ module.exports = (app) => {
     let outstandingTasks = checkOutstandingTasks(pr.body);
 
     // lookup comments on the PR
-    let comments = await context.github.issues.listComments(context.repo({
+    let comments = await context.octokit.issues.listComments(context.repo({
       per_page: 100,
       issue_number: pr.number
     }));
 
     if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}:Main comments api lookup complete`);
+      app.log(`PR #${pr.number}: Main comments api lookup complete`);
     }
 
     // as well as review comments
-    let reviewComments = await context.github.pulls.listReviews(context.repo({
+    let reviewComments = await context.octokit.pulls.listReviews(context.repo({
       per_page: 100,
       pull_number: pr.number
     }));
@@ -61,7 +61,7 @@ module.exports = (app) => {
     }
 
     // and diff level comments on reviews
-    let reviewDiffComments = await context.github.pulls.listComments(context.repo({
+    let reviewDiffComments = await context.octokit.pulls.listReviewComments(context.repo({
       per_page: 100,
       pull_number: pr.number
     }));
@@ -112,6 +112,6 @@ module.exports = (app) => {
     }
 
     // send check back to GitHub
-    return context.github.checks.create(context.repo(check));
+    return context.octokit.checks.create(context.repo(check));
   });
 };
