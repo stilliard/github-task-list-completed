@@ -12,7 +12,6 @@ module.exports = (app) => {
     'pull_request_review', // reviews
     'pull_request_review_comment', // comment lines on diffs for reviews
   ], async context => {
-    const startTime = (new Date).toISOString();
 
     // lookup the pr
     let pr = context.payload.pull_request;
@@ -67,14 +66,19 @@ module.exports = (app) => {
 
     let check = {
       name: 'task-list-completed',
+      head_branch: '',
       head_sha: pr.head.sha,
-      started_at: startTime,
+      started_at: (new Date).toISOString(),
       status: 'in_progress',
       output: {
         title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed',
         summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed',
         text: 'We check if any task lists need completing before you can merge this PR'
-      }
+      },
+      request: {
+        retries: 3,
+        retryAfter: 3,
+      },
     };
 
     // all finished?
