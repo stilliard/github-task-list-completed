@@ -44,3 +44,19 @@ Hello World
     expect(results.total).toBe(2);
     expect(results.remaining).toBe(1);
 });
+
+test('Test nested lists', () => {
+    let markdown = `
+Hello World
+- [x] normal
+- section1
+   - [x] task 1-1
+   - [ ] task 1-2
+- section2
+   - [ ] task 2-1
+   - [x] task 2-2
+`;
+    let results = checkOutstandingTasks(markdown);
+    expect(results.total).toBe(5);
+    expect(results.remaining).toBe(2);
+});
