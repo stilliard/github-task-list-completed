@@ -11,6 +11,10 @@ module.exports = function (body) {
     let tokens = marked.lexer(body, { gfm: true });
     // flatten the nested tokens to make filtering easier
     let allTokens = tokens.flatMap(function mapper(token) {
+        if (token.tokens && token.tokens.length > 1) {
+            return token.tokens.flatMap(mapper);
+        }
+
         return token.items && token.items.length ? token.items.flatMap(mapper) : [token];
     });
     // and filter down to just the task list items
