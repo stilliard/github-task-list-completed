@@ -39,7 +39,13 @@ module.exports = (app) => {
       app.log(`PR #${pr.number}: Request received`);
     }
 
-    let outstandingTasks = checkOutstandingTasks(pr.body);
+    let outstandingTasks = checkOutstandingTasks(null);
+
+    // if the author is a renovate bot, ignore checks
+    // https://www.mend.io/free-developer-tools/renovate/
+    if (pr.user.login.indexOf('renovate[bot]') === -1) {
+      outstandingTasks = checkOutstandingTasks(pr.body);
+    }
 
     // lookup comments on the PR
     let comments = await context.octokit.issues.listComments(context.repo({
