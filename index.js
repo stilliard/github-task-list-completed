@@ -10,7 +10,7 @@ module.exports = (app) => {
     'pull_request.opened',
     'pull_request.edited',
     'pull_request.synchronize',
-    'issue_comment', // for comments on github issues
+    'issue_comment', // for comments on GitHub issues
     'pull_request_review', // reviews
     'pull_request_review_comment', // comment lines on diffs for reviews
   ], async context => {
@@ -121,10 +121,15 @@ module.exports = (app) => {
     };
 
     if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}: Complete and sending back to github`);
+      app.log(`PR #${pr.number}: Complete and sending back to GitHub`);
     }
 
     // send check back to GitHub
-    return context.octokit.checks.create(context.repo(check));
+    const response = await context.octokit.checks.create(context.repo(check));
+    if (ENABLE_ID_LOGS) {
+      app.log(`PR #${pr.number}: Check response status from GitHub ${response.status}`);
+    }
+
+    return;
   });
 };
