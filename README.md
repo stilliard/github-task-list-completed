@@ -54,6 +54,11 @@ Inside your GitHub repo > Settings > Branches > Branch protection rules > Add ru
 
 By default, we mark the check as in_progress until all tasks pass and then it marks it as successful.
 
+## Skippable tasks
+
+Tasks that contain "POST-MERGE" or "N/A" in all caps are skipped. This is useful for tasks that are not applicable to the PR, or tasks that are only applicable after the PR is merged.
+This was inspired by [another project here](https://github.com/Shopify/task-list-checker/tree/main?tab=readme-ov-file#in-a-pull-request). 
+
 ## TODO
 
 - [x] ~~unit tests & travis CI~~

@@ -60,3 +60,18 @@ Hello World
     expect(results.total).toBe(5);
     expect(results.remaining).toBe(2);
 });
+
+test('Test skip items', () => {
+    let markdown = `
+Hello World
+- normal
+- [ ] task one
+- [ ] POST-MERGE: abc
+- [ ] this is not a post-merge test
+- [ ] N/A skipped
+- [x] n/a not skipped
+`;
+    let results = checkOutstandingTasks(markdown);
+    expect(results.total).toBe(3);
+    expect(results.remaining).toBe(2);
+});

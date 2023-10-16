@@ -20,6 +20,15 @@ module.exports = function (body) {
     // and filter down to just the task list items
     let listItems = allTokens.filter(token => token.type === 'list_item');
 
+    // filter out skippable items, case sensitive
+    let skippable = [
+        'POST-MERGE',
+        'N/A',
+    ];
+    listItems = listItems.filter(item => {
+        return ! skippable.some(skip => item.text.indexOf(skip) !== -1);
+    });
+
     // return counts of task list items and how many are left to be completed
     return {
         total: listItems.filter(item => item.checked !== undefined).length,
