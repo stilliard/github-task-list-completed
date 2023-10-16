@@ -113,6 +113,10 @@ module.exports = (app) => {
         let commentOutstandingTasks = checkOutstandingTasks(comment.body);
         outstandingTasks.total += commentOutstandingTasks.total;
         outstandingTasks.remaining += commentOutstandingTasks.remaining;
+        outstandingTasks.optionalTotal += commentOutstandingTasks.optionalTotal;
+        outstandingTasks.optionalRemaining += commentOutstandingTasks.optionalRemaining;
+        outstandingTasks.tasks = (outstandingTasks.tasks || []).concat(commentOutstandingTasks.tasks || []);
+        outstandingTasks.optionalTasks = (outstandingTasks.optionalTasks || []).concat(commentOutstandingTasks.optionalTasks || []);
       });
     }
 
@@ -120,6 +124,25 @@ module.exports = (app) => {
     let optionalText = '';
     if (outstandingTasks.optionalRemaining > 0) {
       optionalText = ' (+' + outstandingTasks.optionalRemaining + ' optional)';
+    }
+
+    // make a markdown table of the tasks
+    let tasksTable = '';
+    if (outstandingTasks.total > 0) {
+      tasksTable += `
+## Required Tasks
+| Task | Status |
+| ---- | ------ |
+${outstandingTasks.tasks.map(task => `| ${task.task} | ${task.status} |`).join('\n')}
+`;
+    }
+    if (outstandingTasks.optionalTotal > 0) {
+      tasksTable += `
+## Optional Tasks
+| Task | Status |
+| ---- | ------ |
+${outstandingTasks.optionalTasks.map(task => `| ${task.task} | ${task.status} |`).join('\n')}
+`;
     }
 
     let check = {
@@ -131,7 +154,7 @@ module.exports = (app) => {
       output: {
         title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed' + optionalText,
         summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed' + optionalText,
-        text: 'We check if any task lists need completing before you can merge this PR'
+        text: tasksTable
       },
       request: {
         retries: 3,

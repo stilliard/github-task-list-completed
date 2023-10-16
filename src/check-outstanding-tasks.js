@@ -33,8 +33,21 @@ module.exports = function (body) {
 
     // return counts of task list items and how many are left to be completed
     return {
+        tasks: listItems.filter(item => item.text.indexOf('OPTIONAL') === -1).map(item => {
+            return {
+                task: item.text.replace(/\[x\]|\[ \]/, '').trim(),
+                status: item.checked ? 'Completed' : '**Incomplete**',
+            };
+        }),
+        optionalTasks: optionalItems.map(item => {
+            return {
+                task: item.text.replace(/\[x\]|\[ \]/, '').trim(),
+                status: item.checked ? 'Completed' : '**Incomplete**',
+            };
+        }),
         total: listItems.filter(item => item.checked !== undefined).length,
         remaining: listItems.filter(item => item.checked === false).length,
+        optionalTotal: optionalItems.filter(item => item.checked !== undefined).length,
         optionalRemaining: optionalItems.filter(item => item.checked === false).length
     };
 };
