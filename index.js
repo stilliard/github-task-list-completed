@@ -42,7 +42,7 @@ module.exports = (app) => {
       return;
     }
 
-    log(pr, 'Request received');
+    log(pr, `Request received [Context: ${context.id}]`);
 
     let prBody = pr.body;
     
@@ -129,7 +129,7 @@ module.exports = (app) => {
 
     // send check back to GitHub
     const response = await context.octokit.checks.create(context.repo(check));
-    log(pr, `Check response status from GitHub ${response.status}`);
+    log(pr, `Check response status from GitHub ${response.status} [X-GitHub-Request-Id: ${response.headers['x-github-request-id']}]`);
 
     return;
   });
