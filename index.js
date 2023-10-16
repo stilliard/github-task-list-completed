@@ -1,9 +1,16 @@
 const checkOutstandingTasks = require('./src/check-outstanding-tasks');
 
-const ENABLE_ID_LOGS = true; // simple ID only logs, no private repo data logged
+const ENABLE_ID_LOGS = true; // Repo name & ID only for logs, no private data logged! (Repo name only needed to help with issue reports & debugging).
 
 module.exports = (app) => {
   app.log('Yay! The app was loaded!');
+
+  // log helper
+  function log(pr, message) {
+    if (ENABLE_ID_LOGS) {
+      app.log(`PR ${pr.head.repo.full_name}#${pr.number}: ${message}`);
+    }
+  }
 
   // watch for pull requests & their changes
   app.on([
@@ -35,9 +42,7 @@ module.exports = (app) => {
       return;
     }
 
-    if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}: Request received`);
-    }
+    log(pr, 'Request received');
 
     let prBody = pr.body;
     
@@ -56,9 +61,7 @@ module.exports = (app) => {
       issue_number: pr.number
     }));
 
-    if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}: Main comments api lookup complete`);
-    }
+    log(pr, 'Main comments api lookup complete');
 
     // as well as review comments
     let reviewComments = await context.octokit.pulls.listReviews(context.repo({
@@ -69,9 +72,7 @@ module.exports = (app) => {
       comments.data = comments.data.concat(reviewComments.data);
     }
 
-    if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}: Review comments api lookup complete`);
-    }
+    log(pr, 'Review comments api lookup complete');
 
     // and diff level comments on reviews
     let reviewDiffComments = await context.octokit.pulls.listReviewComments(context.repo({
@@ -82,9 +83,7 @@ module.exports = (app) => {
       comments.data = comments.data.concat(reviewDiffComments.data);
     }
 
-    if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}: Diff comments api lookup complete`);
-    }
+    log(pr, 'Diff comments api lookup complete');
 
     // & check them for tasks
     if (comments.data.length) {
@@ -120,15 +119,11 @@ module.exports = (app) => {
       check.output.summary = 'All tasks have been completed';
     };
 
-    if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}: Complete and sending back to GitHub`);
-    }
+    log(pr, 'Complete and sending back to GitHub');
 
     // send check back to GitHub
     const response = await context.octokit.checks.create(context.repo(check));
-    if (ENABLE_ID_LOGS) {
-      app.log(`PR #${pr.number}: Check response status from GitHub ${response.status}`);
-    }
+    log(pr, `Check response status from GitHub ${response.status}`);
 
     return;
   });
