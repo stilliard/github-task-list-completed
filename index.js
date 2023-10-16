@@ -67,6 +67,10 @@ module.exports = (app) => {
         issue_number: pr.number
       }));
     } catch (err) {
+      if (err.status === 403) { // if we don't have access to the repo, skip entirely
+        log(pr, `No access, skipping entirely. Error (${err.status}): ${err.message}`, 'error');
+        return;
+      }
       log(pr, `Error looking up comments, skipping. Error (${err.status}): ${err.message}`, 'error');
     }
 
