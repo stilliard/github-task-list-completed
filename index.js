@@ -94,6 +94,12 @@ module.exports = (app) => {
       });
     }
 
+    // optional addon text
+    let optionalText = '';
+    if (outstandingTasks.optionalRemaining > 0) {
+      optionalText = ' (+' + outstandingTasks.optionalRemaining + ' optional)';
+    }
+
     let check = {
       name: 'task-list-completed',
       head_branch: '',
@@ -101,8 +107,8 @@ module.exports = (app) => {
       started_at: (new Date).toISOString(),
       status: 'in_progress',
       output: {
-        title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed',
-        summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed',
+        title: (outstandingTasks.total - outstandingTasks.remaining) + ' / ' + outstandingTasks.total + ' tasks completed' + optionalText,
+        summary: outstandingTasks.remaining + ' task' + (outstandingTasks.remaining > 1 ? 's' : '') + ' still to be completed' + optionalText,
         text: 'We check if any task lists need completing before you can merge this PR'
       },
       request: {
@@ -116,7 +122,7 @@ module.exports = (app) => {
       check.status = 'completed';
       check.conclusion = 'success';
       check.completed_at = (new Date).toISOString();
-      check.output.summary = 'All tasks have been completed';
+      check.output.summary = 'All tasks have been completed' + optionalText;
     };
 
     log(pr, 'Complete and sending back to GitHub');

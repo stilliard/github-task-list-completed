@@ -75,3 +75,17 @@ Hello World
     expect(results.total).toBe(3);
     expect(results.remaining).toBe(2);
 });
+
+test('Test optional items', () => {
+    let markdown = `
+Hello World
+- normal
+- [x] OPTIONAL: one
+- [ ] OPTIONAL: two
+- [x] this is not an optional test
+`;
+    let results = checkOutstandingTasks(markdown);
+    expect(results.total).toBe(2);
+    expect(results.remaining).toBe(0);
+    expect(results.optionalRemaining).toBe(1);
+});

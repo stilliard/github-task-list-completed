@@ -19,19 +19,22 @@ module.exports = function (body) {
     });
     // and filter down to just the task list items
     let listItems = allTokens.filter(token => token.type === 'list_item');
+    let optionalItems = listItems.filter(item => item.text.indexOf('OPTIONAL') !== -1);
 
     // filter out skippable items, case sensitive
     let skippable = [
         'POST-MERGE',
         'N/A',
+        'OPTIONAL', // this is a special case, we want to count these items but not include them in the remaining count
     ];
     listItems = listItems.filter(item => {
-        return ! skippable.some(skip => item.text.indexOf(skip) !== -1);
+        return ! skippable.some(skip => item.text.indexOf(skip) !== -1) || item.text.indexOf('OPTIONAL') !== -1 && item.checked === true;
     });
 
     // return counts of task list items and how many are left to be completed
     return {
         total: listItems.filter(item => item.checked !== undefined).length,
-        remaining: listItems.filter(item => item.checked === false).length
+        remaining: listItems.filter(item => item.checked === false).length,
+        optionalRemaining: optionalItems.filter(item => item.checked === false).length
     };
 };
