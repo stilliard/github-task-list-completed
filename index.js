@@ -42,7 +42,7 @@ module.exports = (app) => {
       }
     }
     if (! pr) {
-      context.log.error('Not on a PR?');
+      context.log.error(`Not on a PR? Skipping. context.name: ${context.name}`);
       return;
     }
 
