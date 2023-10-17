@@ -66,6 +66,17 @@ module.exports = (app) => {
         per_page: 100,
         issue_number: pr.number
       }));
+
+      // bots to ignore
+      let bots = [
+        'linear', // ref https://github.com/stilliard/github-task-list-completed/issues/33
+        'linear[bot]',
+      ];
+      // filter out comments from the bot
+      comments.data = comments.data.filter(comment => {
+        return ! bots.includes(comment.user.login);
+      });
+
     } catch (err) {
       if (err.status === 403) { // if we don't have access to the repo, skip entirely
         log(pr, `No access, skipping entirely. Error (${err.status}): ${err.message}`, 'error');
