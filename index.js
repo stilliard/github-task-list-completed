@@ -37,6 +37,8 @@ module.exports = (app) => {
           pull_number: context.payload.issue.number
         }));
         pr = response.data;
+        // cleanup
+        response = null;
       } catch (err) {
         context.log.error(`Error looking up PR, skipping. Error (${err.status}): ${err.message}`);
       }
@@ -76,6 +78,8 @@ module.exports = (app) => {
       comments.data = comments.data.filter(comment => {
         return ! bots.includes(comment.user.login);
       });
+      // cleanup
+      bots = null;
 
     } catch (err) {
       if (err.status === 403) { // if we don't have access to the repo, skip entirely
@@ -97,6 +101,8 @@ module.exports = (app) => {
       if (reviewComments.data.length) {
         comments.data = comments.data.concat(reviewComments.data);
       }
+      // cleanup
+      reviewComments = null;
     } catch (err) {
       log(pr, `Error looking up review comments, skipping. Error (${err.status}): ${err.message}`, 'error');
     }
@@ -112,6 +118,8 @@ module.exports = (app) => {
       if (reviewDiffComments.data.length) {
         comments.data = comments.data.concat(reviewDiffComments.data);
       }
+      // cleanup
+      reviewDiffComments = null;
     } catch (err) {
       log(pr, `Error looking up review diff comments, skipping. Error (${err.status}): ${err.message}`, 'error');
     }
@@ -182,6 +190,13 @@ ${outstandingTasks.optionalTasks.map(task => `| ${task.task} | ${task.status} |`
     };
 
     log(pr, 'Complete and sending back to GitHub');
+
+    // cleanup
+    prBody = null;
+    outstandingTasks = null;
+    comments = null;
+    tasksTable = null;
+    optionalText = null;
 
     // send check back to GitHub
     try {
