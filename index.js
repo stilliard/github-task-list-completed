@@ -15,13 +15,6 @@ module.exports = (app) => {
     'pull_request_review_comment', // comment lines on diffs for reviews
   ], async context => {
 
-    // log helper
-    function log(pr, message, type = 'info') {
-      if (ENABLE_ID_LOGS) {
-        context.log[type](`PR ${pr.head.repo.full_name}#${pr.number}: ${message}`);
-      }
-    }
-
     // lookup the pr
     let pr = context.payload.pull_request;
 
@@ -48,13 +41,27 @@ module.exports = (app) => {
       return;
     }
 
-    log(pr, `Request received [Context: ${context.id}]`);
-
+    // pr details
+    let prRepo = pr.head.repo.full_name;
+    let prNumber = pr.number;
+    let prHeadSha = pr.head.sha;
     let prBody = pr.body;
+    let prUser = pr.user.login;
+    // cleanup
+    pr = null;
+
+    // log helper
+    function log(message, type = 'info') {
+      if (ENABLE_ID_LOGS) {
+        context.log[type](`PR ${prRepo}#${prNumber}: ${message}`);
+      }
+    }
+
+    log(`Request received [Context: ${context.id}]`);
     
     // if the author is a renovate bot, ignore checks
     // https://www.mend.io/free-developer-tools/renovate/
-    if (pr.user.login.indexOf('renovate[bot]') !== -1) {
+    if (prUser.indexOf('renovate[bot]') !== -1) {
       prBody = null;
     }
     
@@ -66,7 +73,7 @@ module.exports = (app) => {
     try {
       comments = await context.octokit.issues.listComments(context.repo({
         per_page: 100,
-        issue_number: pr.number
+        issue_number: prNumber
       }));
 
       // bots to ignore
@@ -83,20 +90,20 @@ module.exports = (app) => {
 
     } catch (err) {
       if (err.status === 403) { // if we don't have access to the repo, skip entirely
-        log(pr, `No access, skipping entirely. Error (${err.status}): ${err.message}`, 'error');
+        log(`No access, skipping entirely. Error (${err.status}): ${err.message}`, 'error');
         return;
       }
-      log(pr, `Error looking up comments, skipping. Error (${err.status}): ${err.message}`, 'error');
+      log(`Error looking up comments, skipping. Error (${err.status}): ${err.message}`, 'error');
     }
 
-    log(pr, 'Main comments api lookup complete');
+    log('Main comments api lookup complete');
 
     // as well as review comments
     let reviewComments;
     try {
       reviewComments = await context.octokit.pulls.listReviews(context.repo({
         per_page: 100,
-        pull_number: pr.number
+        pull_number: prNumber
       }));
       if (reviewComments.data.length) {
         comments.data = comments.data.concat(reviewComments.data);
@@ -104,16 +111,16 @@ module.exports = (app) => {
       // cleanup
       reviewComments = null;
     } catch (err) {
-      log(pr, `Error looking up review comments, skipping. Error (${err.status}): ${err.message}`, 'error');
+      log(`Error looking up review comments, skipping. Error (${err.status}): ${err.message}`, 'error');
     }
 
-    log(pr, 'Review comments api lookup complete');
+    log('Review comments api lookup complete');
 
     // and diff level comments on reviews
     try {
       let reviewDiffComments = await context.octokit.pulls.listReviewComments(context.repo({
         per_page: 100,
-        pull_number: pr.number
+        pull_number: prNumber
       }));
       if (reviewDiffComments.data.length) {
         comments.data = comments.data.concat(reviewDiffComments.data);
@@ -121,10 +128,10 @@ module.exports = (app) => {
       // cleanup
       reviewDiffComments = null;
     } catch (err) {
-      log(pr, `Error looking up review diff comments, skipping. Error (${err.status}): ${err.message}`, 'error');
+      log(`Error looking up review diff comments, skipping. Error (${err.status}): ${err.message}`, 'error');
     }
 
-    log(pr, 'Diff comments api lookup complete');
+    log('Diff comments api lookup complete');
 
     // & check them for tasks
     if (comments && comments.data && comments.data.length) {
@@ -167,7 +174,7 @@ ${outstandingTasks.optionalTasks.map(task => `| ${task.task} | ${task.status} |`
     let check = {
       name: 'task-list-completed',
       head_branch: '',
-      head_sha: pr.head.sha,
+      head_sha: prHeadSha,
       started_at: (new Date).toISOString(),
       status: 'in_progress',
       output: {
@@ -192,7 +199,7 @@ ${outstandingTasks.optionalTasks.map(task => `| ${task.task} | ${task.status} |`
       check.output.summary = 'All tasks have been completed' + optionalText;
     };
 
-    log(pr, 'Complete and sending back to GitHub');
+    log('Complete and sending back to GitHub');
 
     // cleanup
     prBody = null;
@@ -204,9 +211,9 @@ ${outstandingTasks.optionalTasks.map(task => `| ${task.task} | ${task.status} |`
     // send check back to GitHub
     try {
       const response = await context.octokit.checks.create(context.repo(check));
-      log(pr, `Check response status from GitHub ${response.status} [X-GitHub-Request-Id: ${response.headers['x-github-request-id']}]`);
+      log(`Check response status from GitHub ${response.status} [X-GitHub-Request-Id: ${response.headers['x-github-request-id']}]`);
     } catch (err) {
-      log(pr, `Error sending check back to GitHub. Error (${err.status}): ${err.message}`, 'error');
+      log(`Error sending check back to GitHub. Error (${err.status}): ${err.message}`, 'error');
     }
 
     return;
