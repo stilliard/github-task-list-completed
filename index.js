@@ -176,8 +176,11 @@ ${outstandingTasks.optionalTasks.map(task => `| ${task.task} | ${task.status} |`
         text: tasksTable
       },
       request: {
-        retries: 3,
-        retryAfter: 3,
+        // timeout the request after 3 minutes
+        timeout: 1000 * 60 * 3,
+        // retry up to 10 times on request timeouts
+        retries: 10,
+        retryAfter: 10, // wait 10 seconds
       },
     };
 
