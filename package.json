@@ -21,9 +21,5 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "smee-client": "1.2"
-  },
-  "engines": {
-    "node": "8.9",
-    "npm": "5.6"
   }
 }
