@@ -5,6 +5,36 @@ const ENABLE_ID_LOGS = true; // Repo name & ID only for logs, no private data lo
 module.exports = (app) => {
   app.log('Yay! The app was loaded!');
 
+  // handle merge queue events - a PR can only enter the merge queue after all
+  // required checks (including task-list-completed) have already passed, so we
+  // can immediately report success here to unblock the queue.
+  app.on('merge_group.checks_requested', async context => {
+    const headSha = context.payload.merge_group.head_sha;
+    const prRepo = context.payload.repository.full_name;
+
+    context.log.info(`PR ${prRepo}: Merge queue check requested for ${headSha}, reporting success`);
+
+    const check = {
+      name: 'task-list-completed',
+      head_sha: headSha,
+      status: 'completed',
+      conclusion: 'success',
+      started_at: (new Date).toISOString(),
+      completed_at: (new Date).toISOString(),
+      output: {
+        title: 'All tasks already verified',
+        summary: 'Tasks were already checked before this PR entered the merge queue',
+      },
+    };
+
+    try {
+      const response = await context.octokit.checks.create(context.repo(check));
+      context.log.info(`PR ${prRepo}: Merge queue check response status ${response.status}`);
+    } catch (err) {
+      context.log.error(`PR ${prRepo}: Error sending merge queue check. Error (${err.status}): ${err.message}`);
+    }
+  });
+
   // watch for pull requests & their changes
   app.on([
     'pull_request.opened',
