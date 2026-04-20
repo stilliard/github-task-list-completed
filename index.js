@@ -88,13 +88,13 @@ module.exports = (app) => {
     }
 
     log(`Request received [Context: ${context.id}]`);
-    
+
     // if the author is a renovate bot, ignore checks
     // https://www.mend.io/free-developer-tools/renovate/
     if (prUser.indexOf('renovate[bot]') !== -1) {
       prBody = null;
     }
-    
+
     let outstandingTasks = checkOutstandingTasks(prBody);
 
 
@@ -110,6 +110,7 @@ module.exports = (app) => {
       let bots = [
         'linear', // ref https://github.com/stilliard/github-task-list-completed/issues/33
         'linear[bot]',
+        'coderabbitai[bot]',
       ];
       // filter out comments from the bot
       comments.data = comments.data.filter(comment => {
