@@ -72,11 +72,8 @@ Tasks that contain "OPTIONAL" in all caps are also skipped unless checked, they 
 
 ## Contributing / Development
 
-Code previous ran on Glitch, now it's hosted on Digital Ocean.
+Code hosted on Digital Ocean.
 Hosting is via multiple droplets, one configured as a load balancer & then additional worker nodes/droplets for the actual checks to run on.
-
-*For previous glitch deployments, on the glitch page, click tools > console and then run `git pull origin master && refresh`.
-Permission changes would need to be changed in the app on github.*
 
 ### Local development
 
@@ -150,7 +147,6 @@ If you discover a security issue please email it to myself at andrew@stapps.io a
 ## Credits 
 
 - [Probot](https://github.com/probot/probot) - Used to build this project
-- [Glitch](https://glitch.com/) - Previously used to start this project
 - [WIP](https://github.com/wip/app) - Inspiration for this project
 - [Juliia Osadcha / iconfinder](https://www.iconfinder.com/icons/1790658/checklist_checkmark_clipboard_document_list_tracklist_icon) Icon used for this project
 - [DigitalOcean](https://m.do.co/c/60c76a17a70d) - Hosting of the live app check
