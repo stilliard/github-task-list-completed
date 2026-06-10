@@ -64,11 +64,15 @@ By default, we mark the check as in_progress until all tasks pass and then it ma
 ## Skippable tasks
 
 Tasks that contain "POST-MERGE" or "N/A" in all caps are skipped. This is useful for tasks that are not applicable to the PR, or tasks that are only applicable after the PR is merged.
-This was inspired by [another project here](https://github.com/Shopify/task-list-checker/tree/main?tab=readme-ov-file#in-a-pull-request). 
+This was inspired by [another project here](https://github.com/Shopify/task-list-checker/tree/main?tab=readme-ov-file#in-a-pull-request).
 
 ## Optional tasks
 
 Tasks that contain "OPTIONAL" in all caps are also skipped unless checked, they are also added to an "(+X optional)" text in the check. This is useful for tasks that are not required to be completed before the PR can be merged.
+
+## Bots
+
+Checkboxes added by PR bots are automatically excluded from the task list guard. Bots currently excluded: `linear`, `coderabbitai`
 
 ## Contributing / Development
 
