@@ -122,7 +122,7 @@ describe('ignores bot checkbox comments across all comment types', () => {
         'linear[bot]',
         'coderabbitai[bot]',
     ])('ignores checkbox comments from %s', async (botLogin) => {
-        const botComment = { user: { login: botLogin }, body: '- [ ] bot task' };
+        const botComment = { user: { login: botLogin }, body: '- [ ] bot task' }; // Should not be a blocking task
         let capturedTitle;
 
         nock('https://api.github.com')
@@ -141,7 +141,7 @@ describe('ignores bot checkbox comments across all comment types', () => {
                 action: 'opened',
                 pull_request: {
                     number: prNumber,
-                    body: '- [ ] human task',
+                    body: '- [ ] human task', // Should show up as 1 blocking task
                     user: { login: 'devuser' },
                     head: { repo: { full_name: `${owner}/${repo}` } },
                 },
