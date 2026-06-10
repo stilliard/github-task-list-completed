@@ -1,4 +1,5 @@
 const checkOutstandingTasks = require('./src/check-outstanding-tasks');
+const isBotComment = require('./src/is-bot-comment');
 
 const ENABLE_ID_LOGS = true; // Repo name & ID only for logs, no private data logged! (Repo name only needed to help with issue reports & debugging).
 
@@ -105,20 +106,6 @@ module.exports = (app) => {
         per_page: 100,
         issue_number: prNumber
       }));
-
-      // bots to ignore
-      let bots = [
-        'linear', // ref https://github.com/stilliard/github-task-list-completed/issues/33
-        'linear[bot]',
-        'coderabbitai[bot]',
-      ];
-      // filter out comments from the bot
-      comments.data = comments.data.filter(comment => {
-        return ! bots.includes(comment.user.login);
-      });
-      // cleanup
-      bots = null;
-
     } catch (err) {
       if (err.status === 403) { // if we don't have access to the repo, skip entirely
         log(`No access, skipping entirely. Error (${err.status}): ${err.message}`, 'error');
@@ -167,6 +154,8 @@ module.exports = (app) => {
     // & check them for tasks
     if (comments && comments.data && comments.data.length) {
       comments.data.forEach(function (comment) {
+        if (isBotComment(comment)) return
+
         let commentOutstandingTasks = checkOutstandingTasks(comment.body);
         outstandingTasks.total += commentOutstandingTasks.total;
         outstandingTasks.remaining += commentOutstandingTasks.remaining;
