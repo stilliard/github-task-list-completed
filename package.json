@@ -9,9 +9,10 @@
   "license": "ISC",
   "repository": "https://github.com/stilliard/github-task-list-completed.git",
   "scripts": {
-    "dev-debug": "nodemon --exec \"LOG_LEVEL=debug npm start\"",
-    "dev": "nodemon --exec \"npm start\"",
-    "start": "probot run ./index.js",
+    "dev-debug": "nodemon --exec \"LOG_LEVEL=debug npm run start:single\"",
+    "dev": "nodemon --exec \"npm run start:single\"",
+    "start": "node cluster.js",
+    "start:single": "probot run ./index.js",
     "test": "jest"
   },
   "dependencies": {
