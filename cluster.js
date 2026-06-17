@@ -1,7 +1,8 @@
 const cluster = require('cluster');
 
 if (cluster.isPrimary) {
-  const workers = parseInt(process.env.WEB_CONCURRENCY, 10) || 4;
+  const requested = parseInt(process.env.WEB_CONCURRENCY, 10);
+  const workers = Number.isInteger(requested) && requested > 0 ? requested : 4;
   console.log(`Primary ${process.pid} starting ${workers} workers`);
   for (let i = 0; i < workers; i++) fork();
 
@@ -32,6 +33,7 @@ if (cluster.isPrimary) {
     });
   }
 } else {
+  // equivalent to `probot run ./index.js` (app path passed as a positional arg)
   require('probot').run([process.argv[0], process.argv[1], './index.js']);
 }
 
