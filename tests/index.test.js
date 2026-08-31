@@ -121,6 +121,7 @@ describe('ignores bot checkbox comments across all comment types', () => {
         'linear',
         'linear[bot]',
         'coderabbitai[bot]',
+        'devin-ai-integration[bot]',
     ])('ignores checkbox comments from %s', async (botLogin) => {
         const botComment = { user: { login: botLogin }, body: '- [ ] bot task' }; // Should not be a blocking task
         let capturedTitle;

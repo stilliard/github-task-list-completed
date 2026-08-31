@@ -72,7 +72,7 @@ Tasks that contain "OPTIONAL" in all caps are also skipped unless checked, they 
 
 ## Bots
 
-Checkboxes added by PR bots are automatically excluded from the task list guard. Bots currently excluded: `linear`, `coderabbitai`
+Checkboxes added by PR bots are automatically excluded from the task list guard. Bots currently excluded: `linear`, `coderabbitai`, `devin-ai-integration`
 
 ## Contributing / Development
 
@@ -123,7 +123,7 @@ npm install --omit=dev
 npm start
 ```
 
-Instead of `npm start`, typically in production you'll use a [service file to run via systemd](https://www.freedesktop.org/software/systemd/man/latest/systemd.syntax.html) or similar. 
+Instead of `npm start`, typically in production you'll use a [service file to run via systemd](https://www.freedesktop.org/software/systemd/man/latest/systemd.syntax.html) or similar.
 e.g.
 ```systemd
 [Service]
@@ -148,7 +148,7 @@ Hosted check is on DO's [SFO3](https://www.digitalocean.com/blog/introducing-a-n
 
 If you discover a security issue please email it to myself at andrew@stapps.io and I will get back to you asap. For all other issues or help you can create an issue on this project - Thank you.
 
-## Credits 
+## Credits
 
 - [Probot](https://github.com/probot/probot) - Used to build this project
 - [WIP](https://github.com/wip/app) - Inspiration for this project
