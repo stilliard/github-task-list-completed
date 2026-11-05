@@ -72,7 +72,7 @@ Tasks that contain "OPTIONAL" in all caps are also skipped unless checked, they 
 
 ## Bots
 
-Checkboxes added by PR bots are automatically excluded from the task list guard. Bots currently excluded: `linear`, `coderabbitai`, `devin-ai-integration`
+Checkboxes added by PR bots are automatically excluded from the task list guard. Bots currently excluded: `linear`, `coderabbitai`, `coderabbiteu`, `devin-ai-integration`
 
 ## Contributing / Development
 
