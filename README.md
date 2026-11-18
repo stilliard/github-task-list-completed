@@ -44,13 +44,6 @@ Also when viewing all Pull Requests, you'll see the green tick when all complete
 
 Find out more about GitHub task lists: https://help.github.com/en/articles/about-task-lists
 
-<br>
-<a href="https://m.do.co/c/60c76a17a70d">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/PoweredByDO/DO_Powered_by_Badge_blue.svg" alt="Powered By DO" width="201px">
-</a>
-
-<small>This project is supported by & hosted on Digital Ocean, thanks!</small>
-
 ## Docs
 
 Install & add to the repos you want.
